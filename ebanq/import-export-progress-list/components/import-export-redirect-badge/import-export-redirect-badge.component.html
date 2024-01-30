@@ -1,0 +1,15 @@
+<ng-container *ngIf="importExportBadgeService.isBadgeShown">
+  <div (click)="redirectOnBadge()" class="redirect-badge-wrapper def-btn-success main_color">
+    <div class="redirect-badge-wrapper__wrap-container">
+
+      <div class="wrap-container__process-info">
+        <p class="process-info__text">{{'importExport.Import/Export Operations' | translate}}</p>
+        <p class="process-info--no-margin"> {{ transformLabelName(badgeLabel | translate) }} </p>
+      </div>
+
+      <div class="wrap-container__bottom">
+        <i class="fas fa-arrow-right bottom__arrow"></i>
+      </div>
+    </div>
+  </div>
+</ng-container>

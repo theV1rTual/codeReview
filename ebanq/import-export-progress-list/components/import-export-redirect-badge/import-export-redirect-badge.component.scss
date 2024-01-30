@@ -1,0 +1,36 @@
+.redirect-badge-wrapper {
+  display: flex;
+  position: fixed;
+  z-index: 10001;
+  bottom: 2rem;
+  left: 2rem;
+  width: 280px;
+  padding: 8px;
+
+  .redirect-badge-wrapper__wrap-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .wrap-container__process-info {
+      display: flex;
+      flex-direction: column;
+
+      .process-info__text {
+        margin-bottom: 4px;
+      }
+
+      .process-info--no-margin {
+        margin-bottom: 0;
+      }
+    }
+
+    .wrap-container__bottom {
+      display: flex;
+    }
+
+    .bottom__arrow {
+      margin-left: 2rem;
+    }
+  }
+}

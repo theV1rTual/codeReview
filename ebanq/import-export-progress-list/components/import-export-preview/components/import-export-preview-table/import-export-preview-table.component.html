@@ -1,0 +1,25 @@
+<div *ngIf="showSpinner && !previewData.length" class="ngx-spinner-overlay">
+  <div class="ngx-spinner-container">
+    <div class="ngx-spinner"></div>
+  </div>
+</div>
+<ng-container *ngIf="previewData.length">
+  <div class="import-export__size-limit">
+    <div class="main">
+      <table class="table">
+        <tbody [checkEmptyTable]="{ dataExists: previewData.length }"
+               class="table__body pointer">
+        <ng-container *ngIf="previewData.length">
+          <tr
+            *ngFor="let previewRow of previewData">
+            <ng-container *ngFor="let row of previewRow">
+              <td>{{ row }}</td>
+            </ng-container>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>
+

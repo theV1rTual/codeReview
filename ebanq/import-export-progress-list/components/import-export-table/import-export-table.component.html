@@ -1,0 +1,139 @@
+<div *ngIf="showSpinner" class="ngx-spinner-overlay">
+  <div class="ngx-spinner-container">
+    <div class="ngx-spinner"></div>
+  </div>
+</div>
+<app-import-export-header></app-import-export-header>
+
+<div class="container">
+  <div class="content content--import-export">
+    <div class="button-container with-menu">
+    </div>
+
+    <div class="container">
+      <div class="sort-bar main_color">
+        <div class="date-term-container">
+          <div class="sort-line">
+            <div class="search-container__select sort-select-container">
+              <app-simple-select [form]="form"
+                                 [items]="types"
+                                 bindLabel="value"
+                                 bindValue="key"
+                                 controlName="type"
+                                 placeholder="{{'importExport.All Job Types'  | translate }}"
+                                 [itemLabelKey]="labelForJobs"
+              >
+              </app-simple-select>
+            </div>
+            <div class="search-container__select sort-select-container">
+              <app-simple-select [form]="form"
+                                 [items]="statuses"
+                                 bindLabel="value"
+                                 bindValue="key"
+                                 controlName="status"
+                                 placeholder="{{'importExport.All Statuses'  | translate }}"
+                                 title="{{'importExport.All Statuses'  | translate }}"
+                                 [itemLabelKey]="labelForStatuses"
+              >
+              </app-simple-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <table class="table">
+        <thead class="table__heading">
+        <tr>
+          <th SortHeader="createdAt"
+              name="{{'importExport.Creation Date' | translate}}"
+              [form]="form">
+          </th>
+
+          <th>
+            <span>{{'importExport.Job Description' | translate}}</span>
+          </th>
+
+          <th>
+            <span>{{'importExport.Job Type' | translate}}</span>
+          </th>
+
+          <th>
+            <span>{{'importExport.Status' | translate}}</span>
+          </th>
+
+          <th>
+            <span>{{'importExport.Action' | translate}}</span>
+          </th>
+
+        </tr>
+        </thead>
+
+        <tbody [checkEmptyTable]="{ dataExists: importExportList && importExportList.length }"
+               class="table__body">
+        <ng-container  *ngIf="pagination">
+          <ng-container *ngIf="importExportList">
+            <tr
+              *ngFor="let importExportItem of importExportList | paginate: {
+              itemsPerPage: pagination.limit,
+              currentPage: pagination.currentPage,
+              totalItems: pagination.totalRecords
+            }">
+            <tr
+              *ngFor="let importExportItem of importExportList">
+              <td [title]="importExportItem.createdAt" class="td-max-width-createdAt" data-title="{{'importExport.Creation Date' | translate}}">
+                {{ importExportItem.createdAt | customDate }}
+              </td>
+
+              <td [title]="importExportItem.action" class="td-max-width-min" data-title="{{'importExport.Action' | translate}}">
+                {{importExportItem.actionTitle | translate}}
+              </td>
+
+              <td [title]="importExportItem.type" class="td-max-width-min" data-title="{{'importExport.Import/Export' | translate}}">
+                {{ (importExportItem.type === typesDataMap.csvImport.key ? 'importExport.' + typesDataMap.csvImport.value : 'importExport.' + typesDataMap.csvExport.value) | translate}}
+              </td>
+
+              <td [title]="importExportItem.status" class="td-max-width-min" data-title="{{'importExport.Status' | translate}}" [class]="importExportItem.statusClass">
+                {{ (importExportItem.status === 'in_progress' ? 'importExport.In progress' : 'importExport.' + importExportItem.status.charAt(0).toUpperCase() + importExportItem.status.slice(1) ) | translate }}
+              </td>
+
+              <td class="td-max-width-min actions" data-title="Actions">
+                <div *ngIf="importExportItem.showPreview" (click)="onPreview(importExportItem)" class="icon actions-margin">
+                  <img class="pointer" src="assets/icons/search-export.svg" alt="">
+                  <span class="tooltip-Preview">{{ 'importExport.Preview' | translate }}</span>
+                </div>
+                <div *ngIf="importExportItem.showDownload" (click)="onDownload(importExportItem)" class="icon" [ngStyle]="{'pointer-events': isDownloading ? 'none' : '', 'opacity': isDownloading ? '0.5' : '1'}"  >
+                  <div *ngIf="importExportItem.status === 'Failed' && importExportItem.type === 'csv_export'; else temp">
+                  </div>
+                  <ng-template #temp>
+                    <img class="pointer" src="assets/icons/download-export.svg" alt="">
+                    <span class="tooltip-Download">{{'importExport.Download' | translate}}</span>
+                  </ng-template>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div [style.display]="!(importExportList && importExportList.length) ? 'none': 'flex'"
+         class="bottom">
+      <app-page-size [form]="form"></app-page-size>
+      <app-form-pagination [form]="form"></app-form-pagination>
+    </div>
+    <ng-container *ngIf="showPreview">
+      <app-import-export-preview-popup
+        (previewSubmit)="onPreviewCancel()"
+        [headingMessage]="previewModalTitle"
+        [previewItemId]="selectedPreviewItemId"
+        [errorMessage]="errorMessage"
+        >
+      </app-import-export-preview-popup>
+    </ng-container>
+  </div>
+</div>
+
+

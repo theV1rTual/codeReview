@@ -1,0 +1,29 @@
+<div class="popup-wrapper">
+  <div class="container content border_color-main_color">
+
+    <div *ngIf="headingMessage" class="popup-header background_color-main_color modal-header">
+      <h1 class="heading heading-margin">
+        {{ headingMessage }}
+      </h1>
+      <i (click)="onClose()" class="fas fa-times heading pointer"></i>
+    </div>
+
+    <div class="error-content" *ngIf="errorMessage?.message && ((errorMessage?.status | translate) === ('importExport.Failed' | translate) )">
+      <div class="error-body" *ngFor="let item of messsageArray">
+        <p>{{item}}</p>
+      </div>
+    </div>
+
+    <div (scroll)="onScroll($event)" class="popup-main cancel-space-between">
+
+      <div *ngIf="settingsTitle" class="line sub-heading preview-header">
+        {{ settingsTitle }}
+      </div>
+
+      <app-import-export-preview-table
+        [previewItemId]="previewItemId">
+      </app-import-export-preview-table>
+
+    </div>
+  </div>
+</div>
